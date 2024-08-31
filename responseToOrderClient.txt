@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sun, 18 Aug 2024 09:28:31 GMT
+Content-Type: application/json
+Content-Length: 57
+Connection: keep-alive
+
+{"status":200,"msg":"success","data":{"key":"jihkjkjkl"}}

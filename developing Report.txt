@@ -1,0 +1,8 @@
+1. add all tcpip linking function Thread function 2019-05-16-17-18
+2.  try to connect by itself.
+17:09 2023/6/26
+1. ask those anonymous devies 
+14:53 2023/6/27
+1. announce machine lost connection 
+16:43 2024/8/18
+1. test server get request
