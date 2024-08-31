@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 extern "C" {
-#include <openssl/md5.h>
+//#include <openssl/md5.h>
 }
 int CSocketDecription::SendEncription(char* result, char* key, char* buf)
 {
@@ -22,7 +22,7 @@ void CSocketDecription::MD5ToString(unsigned char* md5result, char* output) {
 void CSocketDecription::md5_hash(char* input, char* output)
 {
     unsigned char md5result[16]; // MD5的哈希值是16字节
-    MD5(0, 0, 0); // 使用OpenSSL的MD5函数
+    //MD5(0, 0, 0); // 使用OpenSSL的MD5函数
 
   //  MD5((unsigned char*)input, strlen(input), md5result); // 使用OpenSSL的MD5函数
  //   MD5ToString(md5result, output); // 将结果转换为16进制字符串
