@@ -582,7 +582,15 @@ int CThreadOrderCatch::_ConvertFont(char* change, int* count, char* particalLine
 
 void CThreadOrderCatch::SetFontSate(stateString_FORMAT* fontStruct, int textX, int lettercount, int width, int height)
 {
-	//fontStruct
+	((stateString_FORMAT*)fontStruct)->param[0] = textX & 0xff;
+	((stateString_FORMAT*)fontStruct)->param[1] = (textX >> 8) & 0x03;
+	((stateString_FORMAT*)fontStruct)->param[1] += (lettercount << 2) & 0xfc;
+	((stateString_FORMAT*)fontStruct)->param[2] = (width / 8) & 0xf;
+	((stateString_FORMAT*)fontStruct)->param[2] += ((height / 8) << 4) & 0xf0;
+
+
+
+
 
 }
 
