@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "JekoAutoMachineServer.h"
 
+#include "CSocketDecription.h"
 
 // C_ChatDlg ¶Ô»°¿ò
 
@@ -366,8 +367,10 @@ void C_ChatDlg::OnBnClickedButtonDisconnect()
 
 void C_ChatDlg::OnBnClickedButtonDisconnect2()
 {
-
-
+	
+	
+	m_SocketDescription->main1();
+	return;
 	CString cs, cs0 = L"";
 	int temp[10];
 	int Prime[3] = {1039, 1049, 1051};
@@ -480,6 +483,7 @@ LRESULT C_ChatDlg::OnMyMessage(WPARAM wParam, LPARAM lParam) {
 	case POST________SEND:
 		{
 			((CClientSocket*)(pJekoAutoMachineServer)->st_TCPSer[(int)pp->ID].client.pClass)->Send(pp->info, pp->len);
+
 		}
 		break;
 	case POST__SEND_CLOSE:

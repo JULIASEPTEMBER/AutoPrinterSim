@@ -390,6 +390,7 @@ public:
 	
 	struct _RUN_CLIENT{
 		int nMask, current;
+		char machineidStirng[20];
 		int ID_Machine;
 		UINT ID_Package;
 		int nTimeoutStamp;

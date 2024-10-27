@@ -12,6 +12,7 @@
 #include "Digital_SignageDoc.h"
 #include "Digital_SignageView.h"
 #include "JekoAutoMachineServer.h"
+#include "CThreadOrderCatch.h"
 int _SendMonitor = 0;
 int _enableMonitor = 0;
 WCHAR cInfoMonitor[1000];
@@ -255,13 +256,107 @@ IMPLEMENT_DYNCREATE(CDigital_SignageView, CView)
 	}
 
 
+#define testbuffer2 "\r\n\
+<LR><FB><FS>菜品: 小香风奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
+\r\n\
+\r\n\
+\r\n\
+<LR><FB><FS>菜品 : 小香风奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
+\r\n\
+\r\n\
+\r\n\
+<LR><FB><FS>菜品 : 小熊猫奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号 : 888 </FS> </FB> </LR>\r\n\
+"
+
+#define testbuffer "<FB><center>**万商财神**</center></FB>\r\n\
+<FB><FS2> <center>350014</center></FS2></FB>\r\n\
+<center>取餐号</center>\r\n\
+<FH2><FW2>----------------</FW2></FH2>\r\n\
+订单编号：cy257815350962290688\r\n\
+下单时间 : 2023 - 12 - 13 10 : 26 : 10\r\n\
+\r\n\
+*************商品*************** \r\n\
+\r\n\
+小香风奶油蛋糕（默认）<right>X2  45.00 </right> \r\n\
+<FH2><FW2>----------------</FW2></FH2>\r\n\
+小香风奶油蛋糕（默认）<right>X2  45.00 </right>\r\n\
+<FH2><FW2>----------------</FW2></FH2>\r\n\
+小熊猫奶油蛋糕（默认）<right>X1  29.00 </right>\r\n\
+********************************\r\n\
+<FH>\r\n\
+<LR>合计：￥125.00, 优惠: -0.01 </LR>\r\n\
+<LR>桌号：888, 人数：5</LR>\r\n\
+<right>实际支付：￥0.00 </right>\r\n\
+<LR>备注：</LR>\r\n\
+</FH>\r\n\
+<FS><center> **完 * *</center></FS>\r\n\
+\r\n\
+\r\n\
+\r\n\
+<LR><FB><FS>菜品: 小香风奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
+\r\n\
+\r\n\
+\r\n\
+<LR><FB><FS>菜品 : 小香风奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
+\r\n\
+\r\n\
+\r\n\
+<LR><FB><FS>菜品 : 小熊猫奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号 : 888 </FS> </FB> </LR>\r\n\
+"
+
 	void C_ChatDlg::OnBnClickedButtonConnect()
 	{
+#ifdef asdasd
 
 		//CComboBox m_Combo_Type;
 		//CEdit m_Edit_IpLocation;
 		//CEdit m_Edit_Port;
+		char buffer[2000], *bufpointer = testbuffer;
+		int len;
+		int count = 0;
+		char* beginPlace = bufpointer;
+		int nLineCount = 0;
+		int nLen = strlen(bufpointer);
+		buffer[0] = 0;
+		pOrderCatch->_ConvertToScreen(buffer, bufpointer, nLen);
+		return;
+		for (int i = 0; i < nLen; i++)
+		{
+			if (i != nLen - 1 && bufpointer[i + 1] != 0x0d)//len
+			{
+				nLineCount++;
+			}
+			else if (bufpointer[i] == 0x0d)
+			{
+				strcat(buffer, "\r\n");
+				count += 2;
+			}
+			else
+			{
+				char local[100];
+				nLineCount++;
 
+				for (int j = 0; j < nLineCount; j++)
+				{
+					local[j] = beginPlace[j];
+				}
+				local[nLineCount] = 0;
+				pOrderCatch->
+				_ConvertFont(buffer, &count, local, nLineCount);
+				beginPlace = bufpointer + i + 3;
+				nLineCount = 0;
+				i += 2;
+			}
+		}
+		//pOrderCatch->_ConvertFont(buffer, len, testbuffer)
+		return;
+#endif
 		SaveInputInformations();
 
 		if(m_Save_TCPINFO.type == 1)

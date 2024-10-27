@@ -4,6 +4,7 @@
 
 
 char bufferFromServer[10000]; 
+char _string_monitor[10000];
 
 int CThreadOrderCatch::_GetStringFrom_clientSocket(char* string)
 {
@@ -152,6 +153,22 @@ void CThreadOrderCatch::_KeepAnalyzing(int* returnKeyFound, _SeekKeyWord* keyshe
 }
 
 
+void CThreadOrderCatch::push_stack(int type)
+{
+	_stack[stack_top++] = type;
+}
+
+
+int CThreadOrderCatch::pop_stack()
+{
+	if (stack_top)
+		stack_top--;
+	else
+		return -1;
+	return _stack[stack_top];
+}
+
+
 char _FONTSEL___FONTB[] =  "FB>"			;
 char _FONTSEL__DFONTB[] =  "/FB>"			;
 char _FONTSEL__CENTER[] =  "center>"		;
@@ -166,31 +183,79 @@ char _FONTSEL___FONTH[] =  "FH>"			;
 char _FONTSEL__DFONTH[] =  "/FH>"			;
 char _FONTSEL___RIGHT[] =  "right>"		;
 char _FONTSEL__DRIGHT[] =  "/right>"		;
+char _FONTSEL______FS[] = "FS>";
+char _FONTSEL_____DFS[] = "/FS>";
+char _FONTSEL______LR[] = "LR>";
+char _FONTSEL_____DLR[] = "/LR>";
+
+
+#define _FONTSEL___FONTB_TYPE 0
+#define _FONTSEL__DFONTB_TYPE 1
+#define _FONTSEL__CENTER_TYPE 2
+#define _FONTSEL_DCENTER_TYPE 3
+#define _FONTSEL__FONTS2_TYPE 4
+#define _FONTSEL_DFONTS2_TYPE 5
+#define _FONTSEL__FONTW2_TYPE 6
+#define _FONTSEL_DFONTW2_TYPE 7
+#define _FONTSEL__FONTH2_TYPE 8
+#define _FONTSEL_DFONTH2_TYPE 9
+#define _FONTSEL___FONTH_TYPE 10
+#define _FONTSEL__DFONTH_TYPE 11
+#define _FONTSEL___RIGHT_TYPE 12
+#define _FONTSEL__DRIGHT_TYPE 13
+#define _FONTSEL______FS_TYPE 14
+#define _FONTSEL_____DFS_TYPE 15
+#define _FONTSEL______LR_TYPE 16
+#define _FONTSEL_____DLR_TYPE 17
+
+
+
+
+
+
+
+
+
+
 
 
 void CThreadOrderCatch::_initThreadOrder()
 {
+	_string_monitor[0] = 0;
 	pBuffer.buf = bufferFromServer;//save order information 
 	pBuffer.len = 0;
 	CountKeyWord = 0;
 	seek[CountKeyWord++].keyword = KEYWORD_EXCHG_KEY;
 	seek[CountKeyWord++].keyword = KEYWORD__MENU_KEY;
 	countKeyWordFont = 0; 
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTB;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTB;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL__CENTER;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL_DCENTER;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTS2;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTS2;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTW2;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTW2;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTH2;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTH2;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTH;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTH;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL___RIGHT;
-		_FONTKEY[countKeyWordFont++].string = _FONTSEL__DRIGHT;
+	stack_top = 0;
+	obj_format_display.ascii_width = 8;
+	obj_format_display.paper_width = 300;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTB;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTB;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__CENTER;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DCENTER;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTS2;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTS2;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTW2;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTW2;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTH2;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTH2;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTH;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTH;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL___RIGHT;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL__DRIGHT;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL______FS;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_____DFS;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL______LR;
+		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_____DLR;
 
+
+
+		for (int i = 0; i < countKeyWordFont; i++)
+		{
+			_FONTKEY[i].len = strlen(_FONTKEY[i].string);
+		}
 
 
 }
@@ -283,19 +348,48 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 	char* beginPlace = gb2312;
 	int nLineCount = 0;
 	_String_Convert_ReturnNewline(gb2312, nLen);
-	for (int i = 0; i < nLen; i++)
+
+	for (int i = 0; i < nLen; i ++)
 	{
-		if (gb2312[i] != 0x0d && i != nLen - 1)
-			nLineCount;
+		if(i != nLen - 1 && gb2312[i + 1] != 0x0d)//len
+		{
+			nLineCount ++;
+		}
+		else if (gb2312[i] == 0x0d)
+		{
+			strcat(output, "\r\n");
+			count += 2;
+		}
 		else
 		{
-			_ConvertFont(output, beginPlace, nLineCount);
+			int pos = 0;
+			find_key_word(output + count, &pos, beginPlace, nLineCount);
+			count += pos;
+			strcat(output, "\r\n");
+			count += 2;
+			//_ConvertFont(output, &count, beginPlace, nLineCount);
+			beginPlace = gb2312 + i + 3;
 			nLineCount = 0;
-			beginPlace = gb2312 + i + 2;
+			i += 2;
 		}
-		
 	}
 	return count;
+}
+
+
+void CThreadOrderCatch::monitor(char* string, int* i)
+{
+	char local[256];
+	if (i)
+	{
+		sprintf(local, string, i);
+		strcat(_string_monitor, local);
+		return;
+	}
+	
+	 {
+		strcat(_string_monitor, string);
+	}
 }
 
 
@@ -312,8 +406,136 @@ void CThreadOrderCatch::_String_Convert_ReturnNewline(char* string, int nLen)
 	}
 }
 
+void CThreadOrderCatch:: output_text(char* target_string, int* pos, char* content, int len, int type)
+{
+	int space_count = 0;
+	switch (type)
+	{
+	case _FONTSEL___FONTB_TYPE: break;
+	case _FONTSEL__DFONTB_TYPE: break;
+	case _FONTSEL__CENTER_TYPE:
+	{
+		int current_width = len * obj_format_display.ascii_width;
+		
+		if (current_width > obj_format_display.paper_width) {
+			MessageBox(0, L"error: overflow", 0, 0);
+			return;
+		}
+		space_count = (obj_format_display.paper_width / 2 - current_width / 2) / obj_format_display.ascii_width;
 
-int CThreadOrderCatch::_ConvertFont(char* change, char* particalLine, int nLen)
+	}
+	break;
+	case _FONTSEL_DCENTER_TYPE: break;
+	case _FONTSEL__FONTS2_TYPE: break;
+	case _FONTSEL_DFONTS2_TYPE: break;
+	case _FONTSEL__FONTW2_TYPE: break;
+	case _FONTSEL_DFONTW2_TYPE: break;
+	case _FONTSEL__FONTH2_TYPE: break;
+	case _FONTSEL_DFONTH2_TYPE: break;
+	case _FONTSEL___FONTH_TYPE: break;
+	case _FONTSEL__DFONTH_TYPE: break;
+	case _FONTSEL___RIGHT_TYPE:
+	{
+		int current_width = len * obj_format_display.ascii_width;
+		
+		if (current_width > obj_format_display.paper_width) {
+			MessageBox(0, L"error: overflow", 0, 0);
+			return;
+		}
+		space_count = (obj_format_display.paper_width - current_width) / obj_format_display.ascii_width;
+
+	}
+	break;
+	case _FONTSEL__DRIGHT_TYPE: break;
+
+
+
+	}
+	if (space_count) {
+
+	
+	if (space_count < *pos && len) {
+		MessageBox(0, L"error: overlap", 0, 0);
+		return;
+	}
+	for (int i = 0; i < space_count - *pos; i++)
+	{
+		target_string[(*pos)++] = ' ';
+	}
+	}
+	target_string[(*pos)] = 0;
+	strcat(target_string, content);
+	(*pos) += len;
+}
+
+void CThreadOrderCatch:: find_key_word(char* target_string, int* pos, char* string, int len)
+{
+	int found = 0;
+	int foundID = 0;
+	char content[100];
+	int contentlen = 0;
+
+	for (int i = 0; i < len; i++)
+	{
+		char* current;
+		current = string + i;
+		if(string[i]=='<')
+		{
+			found = 0;
+			i++;
+			for (int j = 0; j < countKeyWordFont; j++)
+			{
+				found = 0;
+				foundID = -1;
+				for (int k = 0; k < _FONTKEY[j].len; k++)
+				{
+					if (string[i + k] == _FONTKEY[j].string[k])
+					{
+						found++;
+
+					}
+					else
+					{
+						found = 0;
+						break;
+					}
+				}
+				if (found)
+				{
+					foundID = j;
+					i += _FONTKEY[j].len - 1;
+					if (_FONTKEY[j].flag_push == _KeyWordSeries::FLAG_PUSH)
+					{
+						content[contentlen] = 0;
+						output_text(target_string, pos, content, contentlen, stack_top ? _stack[stack_top - 1] : -1);
+						push_stack(foundID);
+						contentlen = 0;
+					}
+					else if (_FONTKEY[j].flag_push == _KeyWordSeries::FLAG__POP)
+					{
+						content[contentlen] = 0;
+						output_text(target_string, pos, content, contentlen, pop_stack());
+						contentlen = 0;
+					}
+					break;
+				}
+			}
+		}
+		if (!found)
+		{
+			content[contentlen++] = string[i];
+		}
+		else
+		{
+			found = 0;
+		}
+	}
+	content[contentlen] = 0;
+	output_text(target_string, pos, content, contentlen, pop_stack());
+	contentlen = 0;
+}
+
+int CThreadOrderCatch::_ConvertFont(char* change, int* count, char* particalLine, int nLen)
 {
 	char get;
 	int state = 0;
@@ -334,14 +556,17 @@ int CThreadOrderCatch::_ConvertFont(char* change, char* particalLine, int nLen)
 			int returnPos = 0;
 			for (int j = 0; j < countKeyWordFont; j++)
 			{
-				for(int k = 0; k < _FONTKEY[i].len; k++)
-					if (particalLine[i + k], _FONTKEY[j].string)
-				if (strstr(particalLine + i, _FONTKEY[j].string))
-				{
-					i += _FONTKEY[j].len - 1;//avoid next i++
-					get = j;
-					break;
-				}
+				//for(int k = 0; k < _FONTKEY[i].len; k++)
+				//	if (particalLine[i + k], _FONTKEY[j].string)
+				//if (strstr(particalLine + i, _FONTKEY[j].string))
+				//{
+				//	i += _FONTKEY[j].len - 1;//avoid next i++
+				//	get = j;
+				//	break;
+				//}
+
+
+
 			}
 			if (-1 != get)
 			{
@@ -353,3 +578,5 @@ int CThreadOrderCatch::_ConvertFont(char* change, char* particalLine, int nLen)
 	}
 	return 0;
 }
+
+

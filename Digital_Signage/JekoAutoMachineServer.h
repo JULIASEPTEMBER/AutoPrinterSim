@@ -21,7 +21,7 @@ class CClientSocket;
 #define KEYWORD____NEWBAG   "NEWBAG"
 #define KEYWORD_____PRINT	"PRINTER"
 #define KEYWORD_EXCHG_KEY	"\r\nkey="
-#define KEYWORD__MENU_KEY	"&key="
+#define KEYWORD__MENU_KEY	"&sign="
 #define KEYWORD__GET_POST	"POST"
 	
 
@@ -104,6 +104,5 @@ public:
 	char bagcheck[100];
 	//add day past
 	void _PlusOneDayOfEach();
-	
 };
 

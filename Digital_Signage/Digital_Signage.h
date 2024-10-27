@@ -14,6 +14,9 @@
 // 有关此类的实现，请参阅 Digital_Signage.cpp
 //
 
+
+class CSocketDecription;
+extern CSocketDecription* m_SocketDescription;
 class CDigital_SignageApp : public CWinAppEx
 {
 public:
@@ -38,3 +41,5 @@ public:
 };
 
 extern CDigital_SignageApp theApp;
+class CThreadOrderCatch;
+extern CThreadOrderCatch* pOrderCatch;

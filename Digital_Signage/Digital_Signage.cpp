@@ -12,6 +12,8 @@
 #include "Digital_SignageDoc.h"
 #include "Digital_SignageView.h"
 
+#include "CSocketDecription.h"
+CSocketDecription* m_SocketDescription;
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -103,6 +105,7 @@ BOOL CDigital_SignageApp::InitInstance()
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
 
+	m_SocketDescription = new CSocketDecription;
 
 	InitContextMenuManager();
 
@@ -139,6 +142,9 @@ BOOL CDigital_SignageApp::InitInstance()
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
+
+
+
 
 
 

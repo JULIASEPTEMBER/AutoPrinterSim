@@ -4,6 +4,10 @@
 #include "resource.h"
 #include "OutputInfo.h"
 #include "CThreadOrderCatch.h"
+#include "CSocketDecription.h"
+
+#include "Digital_Signage.h"
+
 CAsyncSocket Socket;
 _SENDMSG _outsendformat;
 
@@ -138,6 +142,8 @@ void CJekoAutoMachineServer::_TranslateClient(int place, BYTE* buffer, UINT nBfL
 				_InsertTextTodlg(L"client found KEYWORD__REGISTER\r\n");
 				int total = strlen(found);
 				found += strlen(KEYWORD__REGISTER);
+
+				strcpy(st_TCPSer[place].client.machineidStirng, found);
 				for(int j = 0; j < 5; j ++)
 				{
 					if(*found != '0')
@@ -161,6 +167,9 @@ void CJekoAutoMachineServer::_TranslateClient(int place, BYTE* buffer, UINT nBfL
 				st_TCPSer[place].client.nTimeoutStamp = ::GetTickCount();
 				st_TCPSer[place].client.nMask |= MASK___WEB_KEY;
 				st_TCPSer[place].client.current = MASK___WEB_KEY;
+
+				cs.Format(L"get web post keyword\r\n");
+				_InsertTextTodlg(cs);
 			}
 			else if ((st_TCPSer[place].client.nMask | MASK___WEB_KEY) && (::GetTickCount() - st_TCPSer[place].client.nTimeoutStamp < 100))
 			{
@@ -604,6 +613,7 @@ void CJekoAutoMachineServer::_LOOPThread()
 				}
 				st_TCPSer[i].server.nMaskFin |= MASK___PACKAGE;
 			}
+
 			if(!(st_TCPSer[i].server.nMaskFin & MASK___USEPACK) && 
 				(st_TCPSer[i].client.nMask & MASK___USEPACK))
 			{
@@ -620,44 +630,85 @@ void CJekoAutoMachineServer::_LOOPThread()
 			if (!(st_TCPSer[i].server.nMaskFin & MASK___WEB_PRT) &&
 				(st_TCPSer[i].client.nMask & MASK___WEB_PRT))
 			{
-
-
-
-				for (int k = 0; k < _LEN_DESIGN; k++)
-				{
-					int machine;
+					char machine[20];
 					char* info = strstr(pOrderCatch->pBuffer.buf, "machine_code=");
-					machine = atoi(info + strlen("machine_code="));
+					int ilen;
+					for (int ilen = 0; ilen < 20; ilen++)
+					{
+						machine[ilen] = (info + strlen("machine_code="))[ilen];
+						if (machine[ilen] == '&')
+						{
+							machine[ilen++] = 0;
+							break;
+						}
+					}
 					//info = (int)(strstr(pOrderCatch->pBuffer.buf, "&key=")) - (int)pOrderCatch->pBuffer.buf;
 					//info[0] = 0;
 					info = strstr(pOrderCatch->pBuffer.buf, "content=") + strlen("content=");
-					int endlen = (int)(strstr(pOrderCatch->pBuffer.buf, "&key=")) - (int)info;
+					int endlen = (int)(strstr(pOrderCatch->pBuffer.buf, KEYWORD__MENU_KEY)) - (int)info;
 					char machinecode[200];
 					sprintf(machinecode, "%d", machine);
 					//::MessageBoxA(0, info, machinecode, 0);
 					//::MessageBoxA(0, info + endlen, machinecode, 0);
 					char* url;
 					url = new char[endlen];
+
 					endlen = pOrderCatch->ConvertStringTohex(url, info, strlen(info));
+					//m_SocketDescription->md5_hash((char*)url, outputsss);
+					//::MessageBoxA(0, outputsss, 0, 0);//////////////////////////////
+
 					char* gb2312;
 					gb2312 = new char[endlen];
 					pOrderCatch->ConvertURLToGB2312(url, gb2312, endlen);
-					endlen = (int)(strstr(gb2312, "&key=")) - (int)gb2312;
+					endlen = (int)(strstr(gb2312, KEYWORD__MENU_KEY)) - (int)gb2312;
 					gb2312[endlen] = 0;
-					::MessageBoxA(0, gb2312, 0, 0);
 
-					if (machine == st_TCPSer[k].client.ID_Machine)
+					char outputsss[100];
+					char outputtotal[256];
+					outputtotal[0] = 0;
+
+					m_SocketDescription->md5_hash((char*)info, outputsss);
+					strcat(outputtotal, outputsss);
+					strcat(outputtotal, "----info\r\n");
+
+					m_SocketDescription->md5_hash((char*)url, outputsss);
+					strcat(outputtotal, outputsss);
+					strcat(outputtotal, "----url\r\n");
+
+					m_SocketDescription->md5_hash((char*)gb2312, outputsss);
+					strcat(outputtotal, outputsss);
+					strcat(outputtotal, "----gb2312\r\n");
+					::MessageBoxA(0, outputtotal, 0, 0);//////////////////////////////
+					
+					char* get_string;
+					get_string = new char[strlen(gb2312)];
+					get_string[0] = 0;
+					pOrderCatch->_ConvertToScreen(get_string, gb2312, strlen(gb2312));
+					MessageBoxA(0, get_string, 0, 0);
+
+					//::MessageBoxA(0, gb2312, 0, 0);
+
+					for (int k = 0; k < _LEN_DESIGN; k++)
+					{
+						if(strcmp(machine, st_TCPSer[k].client.machineidStirng) == 0)
+					//if (machine == st_TCPSer[k].client.ID_Machine)
 					{
 						_outsendformat.ID = k;
-						_outsendformat.len = strlen(info);
-						_outsendformat.info = info;
+						_outsendformat.len = strlen(get_string);
+						_outsendformat.info = get_string;
 						((CClientSocket*)st_TCPSer[k].client.pClass);
 						::SendMessage(m_hWnd, WM_MYMESSAGE, POST________SEND, 0);
+						
 						break;
 					}
+					//	delete get_string;
+					//delete url;
+					//delete gb2312;
+				}
+
+					delete get_string;
 					delete url;
 					delete gb2312;
-				}
 				//target machine mentioned in http 
 				st_TCPSer[i].server.nMaskFin |= MASK___WEB_PRT;
 
@@ -931,7 +982,7 @@ void CJekoAutoMachineServer::_PlusOneDayOfEach()
 	}
 
 	for(int p = 0; p < 2; p++)
-	{
+	{ 
 		csPath.Format(L"saveinfo%d.iic", page[p]);
 		hFile = ::CreateFile(csPath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, 0, NULL);  
 		::WriteFile(hFile,  &bt[p][0], nLen, &dw, 0);  
