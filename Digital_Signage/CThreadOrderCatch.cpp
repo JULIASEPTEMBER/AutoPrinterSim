@@ -580,3 +580,11 @@ int CThreadOrderCatch::_ConvertFont(char* change, int* count, char* particalLine
 }
 
 
+void CThreadOrderCatch::SetFontSate(char* fontStruct, int textX, int lettercount, int width, int height)
+{
+
+
+	//information s 
+}
+
+
