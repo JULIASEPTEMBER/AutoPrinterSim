@@ -979,7 +979,7 @@ void CJekoAutoMachineServer::_PlusOneDayOfEach()
 			bt[0][(from % PAGELEN) + i] = set;
 		else
 			bt[1][((from % PAGELEN) + i) % PAGELEN] = set;
-	}
+	}  
 
 	for(int p = 0; p < 2; p++)
 	{ 

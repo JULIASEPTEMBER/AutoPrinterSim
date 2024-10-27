@@ -61,7 +61,7 @@ public:
 		char series0[60];
 		char series1[60];
 		char series2[60];
-
+		  
 		int count;
 	};
 
