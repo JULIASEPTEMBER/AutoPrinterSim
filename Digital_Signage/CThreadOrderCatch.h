@@ -1,4 +1,8 @@
 #pragma once
+
+struct stateString_FORMAT {
+	char param[3], data;
+};
 class CThreadOrderCatch
 {
 public:
@@ -53,9 +57,6 @@ public:
 	//char2[0:3] = width / 8
 	//char2[4:7] = height / 8
 	//string:
-	struct stateString {
-		char param[3], data;
-	};
 
 	struct currentStringState {
 		char series0[60];
@@ -65,5 +66,5 @@ public:
 		int count;
 	};
 
-	void SetFontSate(char* fontStruct, int textX, int lettercount, int width, int height);
+	void SetFontSate(stateString_FORMAT* fontStruct, int textX, int lettercount, int width, int height);
 };
