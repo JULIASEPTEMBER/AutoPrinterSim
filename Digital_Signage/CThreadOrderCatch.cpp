@@ -589,9 +589,6 @@ void CThreadOrderCatch::SetFontSate(stateString_FORMAT* fontStruct, int textX, i
 	((stateString_FORMAT*)fontStruct)->param[2] += ((height / 8) << 4) & 0xf0;
 
 
-
-
-
 }
 
 
