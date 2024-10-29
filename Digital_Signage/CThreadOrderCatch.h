@@ -24,7 +24,7 @@ struct _UnCompiled {
 	int font;
 };
 
-#define _DOT_PER_ROW   301
+#define _DOT_PER_ROW   380
 #define _STRINGFONTBOLD   0X80
 #define _STRINGFONTASCI   0X40
 class CThreadOrderCatch

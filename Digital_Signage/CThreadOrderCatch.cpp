@@ -373,6 +373,7 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 			output[count++] = 0;
 			output[count++] = 0;
 			output[count++] = 0;
+			beginPlace = gb2312 + i + 2;
 			i ++;
 		}
 		else if(gb2312[i + 1] == 0x0d)
@@ -823,7 +824,7 @@ void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* inp
 			UINT low = (Get & 0xff) - 0xA1;
 			UINT delta = 6 * 16 - 2;
 			UINT resultCal = high * delta + low;
-			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? 0x80 : 0);
+			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? _STRINGFONTBOLD : 0);
 			output[(*len)++] = resultCal & 0xff;
 			i += 1;
 		}
@@ -836,7 +837,8 @@ void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* inp
 			UINT delta = 6 * 16 - 2;
 			UINT resultCal = high * delta + low;
 			resultCal += startAscii;
-			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? 0x80 : 0) | _STRINGFONTASCI;
+			output[(*len)++] = (resultCal >> 8) & 0xff
+				| (bold ? _STRINGFONTBOLD : 0) | _STRINGFONTASCI;
 			output[(*len)++] = resultCal & 0xff;
 		}
 	}
@@ -894,7 +896,7 @@ void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
 void CThreadOrderCatch::_TranslateFormatInGb2312(_UnCompiled* rslt, stateString_FORMAT* ori)
 {
 
-	rslt->TextX = ori->param[0] + ((ori->param[1] << 6) & 0x300);
+	rslt->TextX = ori->param[0] + ((ori->param[1] << 8) & 0x300);
 	rslt->lettercount = (ori->param[1] >> 2) & 0x3f;
 	rslt->width = ori->param[2] & 0xf;
 	rslt->height = (ori->param[2] >> 4) & 0xf;
