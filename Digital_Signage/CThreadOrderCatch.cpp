@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "CThreadOrderCatch.h"
-#include "JekoAutoMachineServer.h"
-
+#include "JekoAutoMachineServer.h" 
 
 char bufferFromServer[10000];
 char _string_monitor[10000];
@@ -361,23 +360,22 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 	int count = 0;
 	char* beginPlace = gb2312;
 	int nLineCount = 0;
+
 	_String_Convert_ReturnNewline(gb2312, nLen);
+	//gb2312 = testbuffer;
 
 
 	for (int i = 0; i < nLen; i++)
 	{
-		if (i != nLen - 1 && gb2312[i + 1] != 0x0d)//len
-		{
-			nLineCount++;
-		}
-		else if (gb2312[i] == 0x0d)
+		 if (gb2312[i] == 0x0d || i >= nLen - 1)
 		{
 			//strcat(output, "\r\n");
 			output[count++] = 0;
 			output[count++] = 0;
 			output[count++] = 0;
+			i ++;
 		}
-		else
+		else if(gb2312[i + 1] == 0x0d)
 		{
 			int pos = 0;
 			find_key_word_FillStruct(output + count, &pos, beginPlace, nLineCount);
@@ -387,9 +385,17 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 			//_ConvertFont(output, &count, beginPlace, nLineCount);
 			beginPlace = gb2312 + i + 3;//means on[i + 1] exists 0x0d or reach file end
 			nLineCount = 0;
-			i++;
+			i += 2;
+			int k = gb2312[i];
 		}
+		else//(i != nLen - 1 && gb2312[i + 1] != 0x0d && gb2312[i] != 0x0d)//len
+		{
+			nLineCount++;
+		}
+		
 	}
+
+	SaveFile_InPath(L"path.ojulia", (BYTE*)output, count);
 	_OutputTranslating(output, count);
 	return count;
 }
@@ -847,6 +853,7 @@ void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
 	piece = new char[2560];
 	int state = 0;
 	stateString_FORMAT getHead;
+	
 	for (int i = 0; i < count; )
 	{
 		switch (state)
@@ -891,4 +898,20 @@ void CThreadOrderCatch::_TranslateFormatInGb2312(_UnCompiled* rslt, stateString_
 	rslt->lettercount = (ori->param[1] >> 2) & 0x3f;
 	rslt->width = ori->param[2] & 0xf;
 	rslt->height = (ori->param[2] >> 4) & 0xf;
+}
+
+
+void CThreadOrderCatch::SaveFile_InPath(CString csPath, BYTE* bt, UINT nLen)
+{
+
+	DWORD dw;
+	HANDLE hFile;
+	::DeleteFile(csPath);
+	hFile = ::CreateFile(csPath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, 0, NULL);
+
+	::WriteFile(hFile, bt, nLen, &dw, 0);
+	::CloseHandle(hFile);
+	//	csoutput += L"存储文件成功" ;
+	//	m_output.SetWindowTextW(csoutput);
+
 }

@@ -92,5 +92,6 @@ public:
 	void _FormatFontInGb2312Lib(char* output, int* len, char* input, int lenOri, int bold = 0);
 	void _OutputTranslating(char* stringFormatResult, int count);
 	void _TranslateFormatInGb2312(_UnCompiled* rslt, stateString_FORMAT* ori);
+	void SaveFile_InPath(CString csPath, BYTE* bt, UINT nLen);
 };
 

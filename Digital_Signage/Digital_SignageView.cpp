@@ -272,11 +272,12 @@ IMPLEMENT_DYNCREATE(CDigital_SignageView, CView)
 "
 
 	char getlocalTest[10000];
+	char testChangable[10000];
 	void C_ChatDlg::OnBnClickedButtonConnect()
 	{
 
-		
-		pOrderCatch->_ConvertToScreen(getlocalTest, testbuffer, strlen(testbuffer));
+		strcpy(testChangable, testbuffer);
+		pOrderCatch->_ConvertToScreen(getlocalTest, testChangable, strlen(testbuffer));
 #ifdef asdasd
 
 		//CComboBox m_Combo_Type;
