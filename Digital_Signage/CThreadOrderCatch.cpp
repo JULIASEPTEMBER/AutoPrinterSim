@@ -3,7 +3,7 @@
 #include "JekoAutoMachineServer.h"
 
 
-char bufferFromServer[10000]; 
+char bufferFromServer[10000];
 char _string_monitor[10000];
 
 int CThreadOrderCatch::_GetStringFrom_clientSocket(char* string)
@@ -13,33 +13,33 @@ int CThreadOrderCatch::_GetStringFrom_clientSocket(char* string)
 	//_KeepAnalyzing()
 	for (int i = 0; i < strlen(string); i++)
 		_KeepAnalyzing(&whichKeyWord, seek, CountKeyWord, string[i]);
-	if(0)
-	for (int i = 0; i < strlen(string); i++)
-	{
-		match = 0;
-		for (int k = 0; k < CountKeyWord; k++)
+	if (0)
+		for (int i = 0; i < strlen(string); i++)
 		{
-			for (int j = 0; j < strlen(seek[k].keyword); j++)
+			match = 0;
+			for (int k = 0; k < CountKeyWord; k++)
 			{
-				if (string[i + j] != seek[k].keyword[j])
+				for (int j = 0; j < strlen(seek[k].keyword); j++)
 				{
-					match = 0;
+					if (string[i + j] != seek[k].keyword[j])
+					{
+						match = 0;
+						break;
+					}
+					match++;
+				}
+				if (match)
+				{
+					whichKeyWord = k;
 					break;
 				}
-				match++;
 			}
 			if (match)
-			{ 
-				whichKeyWord = k;
+			{
 				break;
 			}
 		}
-		if (match)
-		{ 
-			break;
-		}
-	}
-	
+
 	switch (whichKeyWord)
 	{
 	case 0://normal
@@ -96,7 +96,7 @@ void CThreadOrderCatch::_KeepAnalyzing(int* returnKeyFound, _SeekKeyWord* keyshe
 			break;
 
 		}
-		if(place == strlen(keysheet[tempKey].keyword))
+		if (place == strlen(keysheet[tempKey].keyword))
 		{
 			state = _STATE_INIT;
 			*returnKeyFound = tempKey;
@@ -106,12 +106,12 @@ void CThreadOrderCatch::_KeepAnalyzing(int* returnKeyFound, _SeekKeyWord* keyshe
 	break;
 	case _STATE_FAIL:
 	{
-		
+
 	}
-		break;
+	break;
 	}
 
-		recordKey[recordKeyCount++] = data;
+	recordKey[recordKeyCount++] = data;
 	if (_STATE_FAIL == state)
 	{
 
@@ -169,21 +169,21 @@ int CThreadOrderCatch::pop_stack()
 }
 
 
-char _FONTSEL___FONTB[] =  "FB>"			;
-char _FONTSEL__DFONTB[] =  "/FB>"			;
-char _FONTSEL__CENTER[] =  "center>"		;
-char _FONTSEL_DCENTER[] =  "/center>"		;
-char _FONTSEL__FONTS2[] =  "FS2>"			;
-char _FONTSEL_DFONTS2[] =  "/FS2>"			;
-char _FONTSEL__FONTW2[] =  "FW2>"			;
-char _FONTSEL_DFONTW2[] =  "/FW2>"			;
-char _FONTSEL__FONTH2[] =  "FH2>"			;
-char _FONTSEL_DFONTH2[] =  "/FH2>"			;
-char _FONTSEL___FONTH[] =  "FH>"			;
-char _FONTSEL__DFONTH[] =  "/FH>"			;
-char _FONTSEL___RIGHT[] =  "right>"		;
-char _FONTSEL__DRIGHT[] =  "/right>"		;
-char _FONTSEL______FS[] = "FS>";
+char _FONTSEL___FONTB[] = "FB>";//
+char _FONTSEL__DFONTB[] = "/FB>";
+char _FONTSEL__CENTER[] = "center>";
+char _FONTSEL_DCENTER[] = "/center>";
+char _FONTSEL__FONTS2[] = "FS2>";//48*48
+char _FONTSEL_DFONTS2[] = "/FS2>";
+char _FONTSEL__FONTW2[] = "FW2>";//24*48
+char _FONTSEL_DFONTW2[] = "/FW2>";
+char _FONTSEL__FONTH2[] = "FH2>";//48*24
+char _FONTSEL_DFONTH2[] = "/FH2>";
+char _FONTSEL___FONTH[] = "FH>";//32*24
+char _FONTSEL__DFONTH[] = "/FH>";
+char _FONTSEL___RIGHT[] = "right>";
+char _FONTSEL__DRIGHT[] = "/right>";
+char _FONTSEL______FS[] = "FS>";//32*32
 char _FONTSEL_____DFS[] = "/FS>";
 char _FONTSEL______LR[] = "LR>";
 char _FONTSEL_____DLR[] = "/LR>";
@@ -227,35 +227,35 @@ void CThreadOrderCatch::_initThreadOrder()
 	CountKeyWord = 0;
 	seek[CountKeyWord++].keyword = KEYWORD_EXCHG_KEY;
 	seek[CountKeyWord++].keyword = KEYWORD__MENU_KEY;
-	countKeyWordFont = 0; 
+	countKeyWordFont = 0;
 	stack_top = 0;
 	obj_format_display.ascii_width = 8;
 	obj_format_display.paper_width = 300;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTB;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTB;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__CENTER;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DCENTER;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTS2;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTS2;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTW2;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTW2;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTH2;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTH2;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTH;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTH;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL___RIGHT;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL__DRIGHT;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH;_FONTKEY[countKeyWordFont++].string = _FONTSEL______FS;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP;_FONTKEY[countKeyWordFont++].string = _FONTSEL_____DFS;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL______LR;
-		_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_____DLR;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTB;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTB;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL__CENTER;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_DCENTER;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTS2;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTS2;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTW2;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTW2;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL__FONTH2;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_DFONTH2;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTH;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTH;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL___RIGHT;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL__DRIGHT;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL______FS;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_____DFS;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL______LR;
+	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL_____DLR;
 
 
 
-		for (int i = 0; i < countKeyWordFont; i++)
-		{
-			_FONTKEY[i].len = strlen(_FONTKEY[i].string);
-		}
+	for (int i = 0; i < countKeyWordFont; i++)
+	{
+		_FONTKEY[i].len = strlen(_FONTKEY[i].string);
+	}
 
 
 }
@@ -327,7 +327,7 @@ int CThreadOrderCatch::ConvertStringTohex(char* hexExp, char* asciiExp, int len)
 }
 
 
-void CThreadOrderCatch::ConvertURLToGB2312( char* url, char* gb2312Url, int bufferSize)
+void CThreadOrderCatch::ConvertURLToGB2312(char* url, char* gb2312Url, int bufferSize)
 {
 	// Step 1: Convert the original URL to a wide string (UTF-16)
 	int wideCharLength = MultiByteToWideChar(CP_UTF8, 0, url, -1, NULL, 0);
@@ -349,11 +349,11 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 	int nLineCount = 0;
 	_String_Convert_ReturnNewline(gb2312, nLen);
 
-	for (int i = 0; i < nLen; i ++)
+	for (int i = 0; i < nLen; i++)
 	{
-		if(i != nLen - 1 && gb2312[i + 1] != 0x0d)//len
+		if (i != nLen - 1 && gb2312[i + 1] != 0x0d)//len
 		{
-			nLineCount ++;
+			nLineCount++;
 		}
 		else if (gb2312[i] == 0x0d)
 		{
@@ -386,8 +386,8 @@ void CThreadOrderCatch::monitor(char* string, int* i)
 		strcat(_string_monitor, local);
 		return;
 	}
-	
-	 {
+
+	{
 		strcat(_string_monitor, string);
 	}
 }
@@ -395,7 +395,7 @@ void CThreadOrderCatch::monitor(char* string, int* i)
 
 void CThreadOrderCatch::_String_Convert_ReturnNewline(char* string, int nLen)
 {
-	
+
 	for (int i = 0; i < nLen - 1; i++)
 	{
 		if (string[i] == '\\' && string[i + 1] == 'r')
@@ -406,7 +406,7 @@ void CThreadOrderCatch::_String_Convert_ReturnNewline(char* string, int nLen)
 	}
 }
 
-void CThreadOrderCatch:: output_text(char* target_string, int* pos, char* content, int len, int type)
+void CThreadOrderCatch::output_text(char* target_string, int* pos, char* content, int len, int type)
 {
 	int space_count = 0;
 	switch (type)
@@ -416,7 +416,7 @@ void CThreadOrderCatch:: output_text(char* target_string, int* pos, char* conten
 	case _FONTSEL__CENTER_TYPE:
 	{
 		int current_width = len * obj_format_display.ascii_width;
-		
+
 		if (current_width > obj_format_display.paper_width) {
 			MessageBox(0, L"error: overflow", 0, 0);
 			return;
@@ -437,7 +437,7 @@ void CThreadOrderCatch:: output_text(char* target_string, int* pos, char* conten
 	case _FONTSEL___RIGHT_TYPE:
 	{
 		int current_width = len * obj_format_display.ascii_width;
-		
+
 		if (current_width > obj_format_display.paper_width) {
 			MessageBox(0, L"error: overflow", 0, 0);
 			return;
@@ -453,22 +453,24 @@ void CThreadOrderCatch:: output_text(char* target_string, int* pos, char* conten
 	}
 	if (space_count) {
 
-	
-	if (space_count < *pos && len) {
-		MessageBox(0, L"error: overlap", 0, 0);
-		return;
-	}
-	for (int i = 0; i < space_count - *pos; i++)
-	{
-		target_string[(*pos)++] = ' ';
-	}
+
+		if (space_count < *pos && len) {
+			MessageBox(0, L"error: overlap", 0, 0);
+			return;
+		}
+		for (int i = 0; i < space_count - *pos; i++)
+		{
+			target_string[(*pos)++] = ' ';
+		}
 	}
 	target_string[(*pos)] = 0;
 	strcat(target_string, content);
 	(*pos) += len;
 }
 
-void CThreadOrderCatch:: find_key_word(char* target_string, int* pos, char* string, int len)
+
+//set font in each row
+void CThreadOrderCatch::find_key_word(char* target_string, int* pos, char* string, int len)
 {
 	int found = 0;
 	int foundID = 0;
@@ -479,7 +481,7 @@ void CThreadOrderCatch:: find_key_word(char* target_string, int* pos, char* stri
 	{
 		char* current;
 		current = string + i;
-		if(string[i]=='<')
+		if (string[i] == '<')
 		{
 			found = 0;
 			i++;
@@ -492,7 +494,6 @@ void CThreadOrderCatch:: find_key_word(char* target_string, int* pos, char* stri
 					if (string[i + k] == _FONTKEY[j].string[k])
 					{
 						found++;
-
 					}
 					else
 					{
@@ -507,15 +508,19 @@ void CThreadOrderCatch:: find_key_word(char* target_string, int* pos, char* stri
 					if (_FONTKEY[j].flag_push == _KeyWordSeries::FLAG_PUSH)
 					{
 						content[contentlen] = 0;
+						//FormatInfo_Compiled("");
+
 						output_text(target_string, pos, content, contentlen, stack_top ? _stack[stack_top - 1] : -1);
 						push_stack(foundID);
 						contentlen = 0;
+
 					}
 					else if (_FONTKEY[j].flag_push == _KeyWordSeries::FLAG__POP)
 					{
 						content[contentlen] = 0;
 						output_text(target_string, pos, content, contentlen, pop_stack());
 						contentlen = 0;
+
 					}
 					break;
 				}
@@ -535,6 +540,68 @@ void CThreadOrderCatch:: find_key_word(char* target_string, int* pos, char* stri
 	contentlen = 0;
 }
 
+
+//set font in each row
+void CThreadOrderCatch::find_key_word_FillStruct(char* target_string, int* pos, char* string, int len)
+{
+	int found = 0;
+	int foundID = 0;
+	char content[100];
+	int contentlen = 0;
+
+	for (int i = 0; i < len; i++)
+	{
+		char* current;
+		current = string + i;
+		if (string[i] == '<')
+		{
+			found = 0;
+			i++;
+			for (int j = 0; j < countKeyWordFont; j++)
+			{
+				found = 0;
+				foundID = -1;
+				for (int k = 0; k < _FONTKEY[j].len; k++)
+				{
+					if (string[i + k] == _FONTKEY[j].string[k])
+					{
+						found++;
+					}
+					else
+					{
+						found = 0;
+						break;
+					}
+				}
+				if (found)
+				{
+					foundID = j;
+					i += _FONTKEY[j].len - 1;
+					if (contentlen)
+					{
+						FormatInfo_Compiled(target_string, pos, content, contentlen, &m_FontGlobal);
+					}
+					_formatAccord(foundID);
+					break;
+				}
+			}
+		}
+		if (!found)
+		{
+			content[contentlen++] = string[i];
+		}
+		else
+		{
+			found = 0;
+		}
+	}
+	content[contentlen] = 0;
+	FormatInfo_Compiled(target_string, pos, content, contentlen, &m_FontGlobal);
+
+	contentlen = 0;
+}
+
+
 int CThreadOrderCatch::_ConvertFont(char* change, int* count, char* particalLine, int nLen)
 {
 	char get;
@@ -552,10 +619,11 @@ int CThreadOrderCatch::_ConvertFont(char* change, int* count, char* particalLine
 			}
 			break;
 		case 1:
-		{	
+		{
 			int returnPos = 0;
 			for (int j = 0; j < countKeyWordFont; j++)
 			{
+
 				//for(int k = 0; k < _FONTKEY[i].len; k++)
 				//	if (particalLine[i + k], _FONTKEY[j].string)
 				//if (strstr(particalLine + i, _FONTKEY[j].string))
@@ -564,8 +632,6 @@ int CThreadOrderCatch::_ConvertFont(char* change, int* count, char* particalLine
 				//	get = j;
 				//	break;
 				//}
-
-
 
 			}
 			if (-1 != get)
@@ -588,7 +654,155 @@ void CThreadOrderCatch::SetFontSate(stateString_FORMAT* fontStruct, int textX, i
 	((stateString_FORMAT*)fontStruct)->param[2] = (width / 8) & 0xf;
 	((stateString_FORMAT*)fontStruct)->param[2] += ((height / 8) << 4) & 0xf0;
 
+}
+
+
+void CThreadOrderCatch::FormatInfo_Compiled(char* outputStr, int* endpos, char* string, int len, _UnCompiled* state)
+{
+	switch (m_FontGlobal.font)
+	{
+	case _UnCompiled::default_font_df:
+	case _UnCompiled::default_font_lf:
+		m_FontGlobal.TextX = 0;
+		break;
+	case _UnCompiled::default_font_ct:
+	{
+		int nCountLetter = len * m_FontGlobal.width / 2;
+		int centerPos = _DOT_PER_ROW / 2;
+		int lettercenter = nCountLetter / 2;
+		int displace = centerPos - lettercenter;
+		m_FontGlobal.TextX = displace > 0 ? displace : 0;
+
+
+	}
+		break;
+	case _UnCompiled::default_font_rt:
+	{
+		int nCountLetter = len * m_FontGlobal.width / 2;
+		int displace = _DOT_PER_ROW - nCountLetter;
+		m_FontGlobal.TextX = displace > 0 ? displace : 0;
+
+
+	}
+		break;
+	case _UnCompiled::default_font_lr:
+	{
+		char localstr[100];
+		int findComa = (int)strstr(string, ",");
+		if (!findComa)
+		{
+			m_FontGlobal.font = _UnCompiled::default_font_df;
+			FormatInfo_Compiled(outputStr, endpos, string, len, state); return;
+		}
+		int lenBefore = findComa - (int)string;
+		string[lenBefore] = 0;
+		m_FontGlobal.font = _UnCompiled::default_font_lf;
+		FormatInfo_Compiled(outputStr, endpos, string, lenBefore, state);
+		string = &string[lenBefore + 1];
+		len -= lenBefore + 1;
+		m_FontGlobal.font = _UnCompiled::default_font_rt;
+		FormatInfo_Compiled(outputStr, endpos, string, len, state); return;
+	}
+		break;
+
+	}
+	SetFontSate((stateString_FORMAT*)&outputStr[*endpos]
+		, m_FontGlobal.TextX
+		, m_FontGlobal.lettercount
+		, m_FontGlobal.width
+		, m_FontGlobal.height);
+	(*endpos) += sizeof(stateString_FORMAT);
+
+	_FormatFontInGb2312Lib(outputStr, endpos, string, len, m_FontGlobal.bold);
 
 }
 
 
+void CThreadOrderCatch::_formatAccord(int id)
+{
+	switch (id)
+	{
+	case _FONTSEL___FONTB_TYPE:
+		m_FontGlobal.bold = 1;
+		break;
+	case _FONTSEL__DFONTB_TYPE:
+		m_FontGlobal.bold = m_FontGlobal.default_Regular;
+		break;
+	case _FONTSEL__CENTER_TYPE:
+		m_FontGlobal.font = m_FontGlobal.default_font_ct;
+		break;
+	case _FONTSEL_DCENTER_TYPE:
+	case _FONTSEL__DRIGHT_TYPE:
+	case _FONTSEL_____DLR_TYPE:
+		m_FontGlobal.font = m_FontGlobal.default_font_df;
+		break;
+	case _FONTSEL__FONTS2_TYPE:
+		m_FontGlobal.width = 48;
+		m_FontGlobal.height = 48;
+		break;
+	case _FONTSEL_DFONTS2_TYPE:
+	case _FONTSEL_DFONTW2_TYPE:
+	case _FONTSEL_DFONTH2_TYPE:
+	case _FONTSEL__DFONTH_TYPE:
+	case _FONTSEL_____DFS_TYPE:
+		m_FontGlobal.width = m_FontGlobal.default_width;
+		m_FontGlobal.height = m_FontGlobal.default_height;
+		break;
+	case _FONTSEL__FONTW2_TYPE:
+
+		m_FontGlobal.width = 48;
+		m_FontGlobal.height = 24;
+		break;
+	case _FONTSEL__FONTH2_TYPE:
+		m_FontGlobal.width = 24;
+		m_FontGlobal.height = 48;
+		break;
+	case _FONTSEL___FONTH_TYPE:
+		m_FontGlobal.width = 24;
+		m_FontGlobal.height = 32;
+		break;
+	case _FONTSEL___RIGHT_TYPE:
+		m_FontGlobal.font = m_FontGlobal.default_font_rt;
+		break;
+	case _FONTSEL______FS_TYPE:
+		m_FontGlobal.width = 32;
+		m_FontGlobal.height = 32;
+		break;
+	case _FONTSEL______LR_TYPE:
+		m_FontGlobal.font = m_FontGlobal.default_font_lr;
+		break;
+	}
+}
+
+
+void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* input, int lenOri, int bold)
+{
+
+	for (int i = 0; i < lenOri; i++)
+	{
+
+		if (input[i] & 0x80)
+		{
+			UINT Get = (input[i + 0] & 0xff) << 8 | (input[i + 1] & 0xff);
+			UINT high = (Get >> 8) - 0xA1;
+			UINT low = (Get & 0xff) - 0xA1;
+			UINT delta = 6 * 16 - 2;
+			UINT resultCal = high * delta + low;
+			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? 0x80 : 0);
+			output[(*len)++] = resultCal & 0xff;
+			i += 1;
+		}
+		else
+		{
+			UINT startAscii = input[i + 0] - 0x20;
+			UINT Get = 0xa3a0;
+			UINT high = (Get >> 8) - 0xA1;
+			UINT low = (Get & 0xff) - 0xA1;
+			UINT delta = 6 * 16 - 2;
+			UINT resultCal = high * delta + low;
+			resultCal += startAscii;
+			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? 0x80 : 0) | _STRINGFONTASCI;
+			output[(*len)++] = resultCal & 0xff;
+		}
+	}
+}
