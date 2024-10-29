@@ -271,47 +271,12 @@ IMPLEMENT_DYNCREATE(CDigital_SignageView, CView)
 <LR><FB><FS>桌号 : 888 </FS> </FB> </LR>\r\n\
 "
 
-#define testbuffer "<FB><center>**万商财神**</center></FB>\r\n\
-<FB><FS2> <center>350014</center></FS2></FB>\r\n\
-<center>取餐号</center>\r\n\
-<FH2><FW2>----------------</FW2></FH2>\r\n\
-订单编号：cy257815350962290688\r\n\
-下单时间 : 2023 - 12 - 13 10 : 26 : 10\r\n\
-\r\n\
-*************商品*************** \r\n\
-\r\n\
-小香风奶油蛋糕（默认）<right>X2  45.00 </right> \r\n\
-<FH2><FW2>----------------</FW2></FH2>\r\n\
-小香风奶油蛋糕（默认）<right>X2  45.00 </right>\r\n\
-<FH2><FW2>----------------</FW2></FH2>\r\n\
-小熊猫奶油蛋糕（默认）<right>X1  29.00 </right>\r\n\
-********************************\r\n\
-<FH>\r\n\
-<LR>合计：￥125.00, 优惠: -0.01 </LR>\r\n\
-<LR>桌号：888, 人数：5</LR>\r\n\
-<right>实际支付：￥0.00 </right>\r\n\
-<LR>备注：</LR>\r\n\
-</FH>\r\n\
-<FS><center> **完 * *</center></FS>\r\n\
-\r\n\
-\r\n\
-\r\n\
-<LR><FB><FS>菜品: 小香风奶油蛋糕</FS></FB></LR>\r\n\
-<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
-\r\n\
-\r\n\
-\r\n\
-<LR><FB><FS>菜品 : 小香风奶油蛋糕</FS></FB></LR>\r\n\
-<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
-\r\n\
-\r\n\
-\r\n\
-<LR><FB><FS>菜品 : 小熊猫奶油蛋糕</FS></FB></LR>\r\n\
-<LR><FB><FS>桌号 : 888 </FS> </FB> </LR>\r\n\
-"
-
+	char getlocalTest[10000];
 	void C_ChatDlg::OnBnClickedButtonConnect()
 	{
+
+		
+		pOrderCatch->_ConvertToScreen(getlocalTest, testbuffer, strlen(testbuffer));
 #ifdef asdasd
 
 		//CComboBox m_Combo_Type;
