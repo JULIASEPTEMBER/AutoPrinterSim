@@ -3,12 +3,34 @@
 struct stateString_FORMAT {
 	char param[3];
 };
-#define _DOT_PER_ROW   301
+struct _UnCompiled {
+	static const int default_TextX = 0
+		, default_lettercount = 0
+		, default_width = 24
+		, default_height = 24
+		, default_Regular = 0
+		, default_font_df = 0
+		, default_font_ct = 1
+		, default_font_lf = 2
+		, default_font_rt = 3
+		, default_font_lr = 4
+		;
+
+	int TextX;
+	int lettercount;
+	int width;
+	int height;
+	int bold;
+	int font;
+};
+
+#define _DOT_PER_ROW   380
 #define _STRINGFONTBOLD   0X80
 #define _STRINGFONTASCI   0X40
 class CThreadOrderCatch
 {
 public:
+	CThreadOrderCatch();
 	//analyze api from client and control printing hardware to 
 	int _GetStringFrom_clientSocket(char* string);
 	
@@ -62,33 +84,14 @@ public:
 	//char2[4:7] = height / 8
 	//string:
 	//occor 3*'\0' on the end of each row 
-	struct _UnCompiled{
-		static const int default_TextX = 0
-			, default_lettercount = 0
-			, default_width = 24
-			, default_height = 24
-			, default_Regular = 0
-			, default_font_df = 0
-			, default_font_ct = 1
-			, default_font_lf = 2
-			, default_font_rt = 3
-			, default_font_lr = 4
-
-			;
-		
-		int TextX;
-		int lettercount;
-		int width;
-		int height;
-		int bold;
-		int font;
-	}m_FontGlobal;
-	 
-
+	_UnCompiled m_FontGlobal;
 	void SetFontSate(stateString_FORMAT* fontStruct, int textX, int lettercount, int width, int height);
 	void FormatInfo_Compiled(char* outputStr, int* endpos, char* string, int len, _UnCompiled* state);
 	//change global font by current font key
 	void _formatAccord(int id);
 	void _FormatFontInGb2312Lib(char* output, int* len, char* input, int lenOri, int bold = 0);
+	void _OutputTranslating(char* stringFormatResult, int count);
+	void _TranslateFormatInGb2312(_UnCompiled* rslt, stateString_FORMAT* ori);
+	void SaveFile_InPath(CString csPath, BYTE* bt, UINT nLen);
 };
 

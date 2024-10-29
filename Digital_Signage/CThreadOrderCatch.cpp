@@ -1,10 +1,23 @@
 #include "stdafx.h"
 #include "CThreadOrderCatch.h"
-#include "JekoAutoMachineServer.h"
-
+#include "JekoAutoMachineServer.h" 
 
 char bufferFromServer[10000];
 char _string_monitor[10000];
+
+
+CThreadOrderCatch::CThreadOrderCatch()
+{
+	int total = sizeof(_UnCompiled);
+	for (int i = 0; i < total; i++)
+		((char*)&m_FontGlobal)[i] = 0;
+	m_FontGlobal.width = _UnCompiled::default_width;
+	m_FontGlobal.height = _UnCompiled::default_height;
+	m_FontGlobal.TextX = 0;
+	m_FontGlobal.lettercount = _UnCompiled::default_lettercount;
+	m_FontGlobal.bold = _UnCompiled::default_Regular;
+	m_FontGlobal.font = _UnCompiled::default_font_df;
+}
 
 int CThreadOrderCatch::_GetStringFrom_clientSocket(char* string)
 {
@@ -347,32 +360,44 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 	int count = 0;
 	char* beginPlace = gb2312;
 	int nLineCount = 0;
+
 	_String_Convert_ReturnNewline(gb2312, nLen);
+	//gb2312 = testbuffer;
+
 
 	for (int i = 0; i < nLen; i++)
 	{
-		if (i != nLen - 1 && gb2312[i + 1] != 0x0d)//len
+		 if (gb2312[i] == 0x0d || i >= nLen - 1)
+		{
+			//strcat(output, "\r\n");
+			output[count++] = 0;
+			output[count++] = 0;
+			output[count++] = 0;
+			beginPlace = gb2312 + i + 2;
+			i ++;
+		}
+		else if(gb2312[i + 1] == 0x0d)
+		{
+			int pos = 0;
+			find_key_word_FillStruct(output + count, &pos, beginPlace, nLineCount);
+			//find_key_word(output + count, &pos, beginPlace, nLineCount);
+			count += pos;
+			//strcat(output, "\r\n");
+			//_ConvertFont(output, &count, beginPlace, nLineCount);
+			beginPlace = gb2312 + i + 3;//means on[i + 1] exists 0x0d or reach file end
+			nLineCount = 0;
+			i += 2;
+			int k = gb2312[i];
+		}
+		else//(i != nLen - 1 && gb2312[i + 1] != 0x0d && gb2312[i] != 0x0d)//len
 		{
 			nLineCount++;
 		}
-		else if (gb2312[i] == 0x0d)
-		{
-			strcat(output, "\r\n");
-			count += 2;
-		}
-		else
-		{
-			int pos = 0;
-			find_key_word(output + count, &pos, beginPlace, nLineCount);
-			count += pos;
-			strcat(output, "\r\n");
-			count += 2;
-			//_ConvertFont(output, &count, beginPlace, nLineCount);
-			beginPlace = gb2312 + i + 3;
-			nLineCount = 0;
-			i += 2;
-		}
+		
 	}
+
+	SaveFile_InPath(L"path.ojulia", (BYTE*)output, count);
+	_OutputTranslating(output, count);
 	return count;
 }
 
@@ -579,7 +604,9 @@ void CThreadOrderCatch::find_key_word_FillStruct(char* target_string, int* pos, 
 					i += _FONTKEY[j].len - 1;
 					if (contentlen)
 					{
+						content[contentlen] = 0;
 						FormatInfo_Compiled(target_string, pos, content, contentlen, &m_FontGlobal);
+						contentlen = 0;
 					}
 					_formatAccord(foundID);
 					break;
@@ -596,9 +623,12 @@ void CThreadOrderCatch::find_key_word_FillStruct(char* target_string, int* pos, 
 		}
 	}
 	content[contentlen] = 0;
+	if(contentlen)
+	{
 	FormatInfo_Compiled(target_string, pos, content, contentlen, &m_FontGlobal);
 
 	contentlen = 0;
+	}
 }
 
 
@@ -659,6 +689,8 @@ void CThreadOrderCatch::SetFontSate(stateString_FORMAT* fontStruct, int textX, i
 
 void CThreadOrderCatch::FormatInfo_Compiled(char* outputStr, int* endpos, char* string, int len, _UnCompiled* state)
 {
+	int begPos;
+
 	switch (m_FontGlobal.font)
 	{
 	case _UnCompiled::default_font_df:
@@ -675,7 +707,7 @@ void CThreadOrderCatch::FormatInfo_Compiled(char* outputStr, int* endpos, char* 
 
 
 	}
-		break;
+	break;
 	case _UnCompiled::default_font_rt:
 	{
 		int nCountLetter = len * m_FontGlobal.width / 2;
@@ -684,7 +716,7 @@ void CThreadOrderCatch::FormatInfo_Compiled(char* outputStr, int* endpos, char* 
 
 
 	}
-		break;
+	break;
 	case _UnCompiled::default_font_lr:
 	{
 		char localstr[100];
@@ -703,18 +735,22 @@ void CThreadOrderCatch::FormatInfo_Compiled(char* outputStr, int* endpos, char* 
 		m_FontGlobal.font = _UnCompiled::default_font_rt;
 		FormatInfo_Compiled(outputStr, endpos, string, len, state); return;
 	}
-		break;
-
+	break;
 	}
-	SetFontSate((stateString_FORMAT*)&outputStr[*endpos]
+
+	//m_FontGlobal.lettercount = len;
+	begPos = (*endpos);
+
+	_FormatFontInGb2312Lib(outputStr + sizeof(stateString_FORMAT), endpos, string, len, m_FontGlobal.bold);
+	m_FontGlobal.lettercount = (((int)*endpos) - begPos) / 2;
+
+	SetFontSate((stateString_FORMAT*)&outputStr[begPos]
 		, m_FontGlobal.TextX
 		, m_FontGlobal.lettercount
 		, m_FontGlobal.width
 		, m_FontGlobal.height);
+
 	(*endpos) += sizeof(stateString_FORMAT);
-
-	_FormatFontInGb2312Lib(outputStr, endpos, string, len, m_FontGlobal.bold);
-
 }
 
 
@@ -788,7 +824,7 @@ void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* inp
 			UINT low = (Get & 0xff) - 0xA1;
 			UINT delta = 6 * 16 - 2;
 			UINT resultCal = high * delta + low;
-			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? 0x80 : 0);
+			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? _STRINGFONTBOLD : 0);
 			output[(*len)++] = resultCal & 0xff;
 			i += 1;
 		}
@@ -801,8 +837,83 @@ void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* inp
 			UINT delta = 6 * 16 - 2;
 			UINT resultCal = high * delta + low;
 			resultCal += startAscii;
-			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? 0x80 : 0) | _STRINGFONTASCI;
+			output[(*len)++] = (resultCal >> 8) & 0xff
+				| (bold ? _STRINGFONTBOLD : 0) | _STRINGFONTASCI;
 			output[(*len)++] = resultCal & 0xff;
 		}
 	}
+}
+
+
+
+void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
+{
+	char* monitor, * piece, * get;
+	get = stringFormatResult;
+	monitor = new char[10000];
+	monitor[0] = 0;
+	piece = new char[2560];
+	int state = 0;
+	stateString_FORMAT getHead;
+	
+	for (int i = 0; i < count; )
+	{
+		switch (state)
+		{
+		case 0:
+			_TranslateFormatInGb2312(&m_FontGlobal, (stateString_FORMAT*)(get + i));
+			sprintf(piece, "\r\ntxtX:%d, lettercount:%d, width:%d, height:%d\r\n"
+				, m_FontGlobal.TextX
+				, m_FontGlobal.lettercount
+				, m_FontGlobal.width
+				, m_FontGlobal.height
+			);
+			strcat(monitor, piece);
+			state++;
+			i += 3;
+			break;
+		case 1:
+		{
+			for (int j = 0; j < m_FontGlobal.lettercount; j++)
+			{
+				sprintf(piece, "%02x, %02x, ", *(get + i + j * 2 + 0) & 0xff, *(get + i + j * 2 + 1) & 0xff);
+				strcat(monitor, piece);
+			}
+			i += m_FontGlobal.lettercount * 2;
+			
+		}
+		state = 0;
+		break;
+
+		}
+	}
+	monitor;
+	delete piece;
+	delete monitor;
+}
+
+
+void CThreadOrderCatch::_TranslateFormatInGb2312(_UnCompiled* rslt, stateString_FORMAT* ori)
+{
+
+	rslt->TextX = ori->param[0] + ((ori->param[1] << 8) & 0x300);
+	rslt->lettercount = (ori->param[1] >> 2) & 0x3f;
+	rslt->width = ori->param[2] & 0xf;
+	rslt->height = (ori->param[2] >> 4) & 0xf;
+}
+
+
+void CThreadOrderCatch::SaveFile_InPath(CString csPath, BYTE* bt, UINT nLen)
+{
+
+	DWORD dw;
+	HANDLE hFile;
+	::DeleteFile(csPath);
+	hFile = ::CreateFile(csPath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, 0, NULL);
+
+	::WriteFile(hFile, bt, nLen, &dw, 0);
+	::CloseHandle(hFile);
+	//	csoutput += L"存储文件成功" ;
+	//	m_output.SetWindowTextW(csoutput);
+
 }
