@@ -379,7 +379,7 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 		else if(gb2312[i + 1] == 0x0d)
 		{
 			int pos = 0;
-			//m_FontGlobal.RowBeg = 1;
+			m_FontGlobal.RowBeg = 1;
 			find_key_word_FillStruct(output + count, &pos, beginPlace, nLineCount);
 			//find_key_word(output + count, &pos, beginPlace, nLineCount);
 			count += pos;

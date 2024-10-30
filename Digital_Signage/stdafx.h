@@ -163,16 +163,16 @@ const BYTE FC_DBG_RUN_TO=0x22;	//运行至指定处
 \r\n\
 \r\n\
 \r\n\
-<LR><FB><FS>菜品: 小香风奶油蛋糕</FS></FB></LR>\r\n\
-<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
+<LR><FB><FS>菜品:,小香风奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号:,888 </FS></FB></LR>\r\n\
 \r\n\
 \r\n\
 \r\n\
-<LR><FB><FS>菜品 : 小香风奶油蛋糕</FS></FB></LR>\r\n\
-<LR><FB><FS>桌号 : 888 </FS></FB></LR>\r\n\
+<LR><FB><FS>菜品:,小香风奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号:,888 </FS></FB></LR>\r\n\
 \r\n\
 \r\n\
 \r\n\
-<LR><FB><FS>菜品 : 小熊猫奶油蛋糕</FS></FB></LR>\r\n\
-<LR><FB><FS>桌号 : 888 </FS> </FB> </LR>\r\n\
+<LR><FB><FS>菜品:,小熊猫奶油蛋糕</FS></FB></LR>\r\n\
+<LR><FB><FS>桌号:,888</FS></FB></LR>\r\n\
 "
