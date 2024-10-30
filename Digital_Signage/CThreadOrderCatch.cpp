@@ -396,7 +396,7 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 		
 	}
 
-	SaveFile_InPath(L"path.ojulia", (BYTE*)output, count);
+	SaveFile_InPath(L"C:\\cloud\\BaiduSyncdisk\\simo2\\AutoPrinter\\AutoPrinter\\path.ojulia", (BYTE*)output, count);
 	_OutputTranslating(output, count);
 	return count;
 }
