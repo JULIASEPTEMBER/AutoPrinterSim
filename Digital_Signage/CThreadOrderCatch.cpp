@@ -903,10 +903,15 @@ void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
 void CThreadOrderCatch::_TranslateFormatInGb2312(_UnCompiled* rslt, stateString_FORMAT* ori)
 {
 
-	rslt->TextX = ori->param[0] + ((ori->param[1] << 8) & 0x300);
+
+	rslt->TextX = (ori->param[0] & 0xff) + ((ori->param[1] << 8) & 0x300);
 	rslt->lettercount = (ori->param[1] >> 2) & 0x3f;
 	rslt->width = ori->param[2] & 0xf;
 	rslt->height = (ori->param[2] >> 4) & 0xf;
+	rslt->width *= 8;
+	rslt->height *= 8;
+
+	if (*((char*)(ori + 1)) & _STRINGFONT_BEG && rslt->lettercount)rslt->RowBeg = 1;
 }
 
 
