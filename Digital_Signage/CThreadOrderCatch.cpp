@@ -243,7 +243,7 @@ void CThreadOrderCatch::_initThreadOrder()
 	countKeyWordFont = 0;
 	stack_top = 0;
 	obj_format_display.ascii_width = 8;
-	obj_format_display.paper_width = 300;
+	obj_format_display.paper_width = 380;
 	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL___FONTB;
 	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG__POP; _FONTKEY[countKeyWordFont++].string = _FONTSEL__DFONTB;
 	_FONTKEY[countKeyWordFont].flag_push = _KeyWordSeries::FLAG_PUSH; _FONTKEY[countKeyWordFont++].string = _FONTSEL__CENTER;
@@ -396,7 +396,7 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 		}
 		
 	} 
-	SaveFile_InPath(L"C:\\cloud\\BaiduSyncdisk\\simo2\\AutoPrinter\\AutoPrinter\\path.ojulia", (BYTE*)output, count);
+	SaveFile_InPath(L"D:\\Download\\AutoPrinter-master\\AutoPrinter\\path.ojulia", (BYTE*)output, count);
 	_OutputTranslating(output, count);
 	return count;
 }
