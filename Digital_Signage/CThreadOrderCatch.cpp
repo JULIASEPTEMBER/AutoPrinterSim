@@ -379,6 +379,7 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 		else if(gb2312[i + 1] == 0x0d)
 		{
 			int pos = 0;
+			m_FontGlobal.RowBeg = 1;
 			find_key_word_FillStruct(output + count, &pos, beginPlace, nLineCount);
 			//find_key_word(output + count, &pos, beginPlace, nLineCount);
 			count += pos;
@@ -394,8 +395,7 @@ int CThreadOrderCatch::_ConvertToScreen(char* output, char* gb2312, int nLen)
 			nLineCount++;
 		}
 		
-	}
-
+	} 
 	SaveFile_InPath(L"C:\\cloud\\BaiduSyncdisk\\simo2\\AutoPrinter\\AutoPrinter\\path.ojulia", (BYTE*)output, count);
 	_OutputTranslating(output, count);
 	return count;
@@ -430,6 +430,7 @@ void CThreadOrderCatch::_String_Convert_ReturnNewline(char* string, int nLen)
 		}
 	}
 }
+
 
 void CThreadOrderCatch::output_text(char* target_string, int* pos, char* content, int len, int type)
 {
@@ -573,8 +574,8 @@ void CThreadOrderCatch::find_key_word_FillStruct(char* target_string, int* pos, 
 	int foundID = 0;
 	char content[100];
 	int contentlen = 0;
-
-	for (int i = 0; i < len; i++)
+	
+	for (int i = 0; i < len + 1; i++)
 	{
 		char* current;
 		current = string + i;
@@ -604,7 +605,7 @@ void CThreadOrderCatch::find_key_word_FillStruct(char* target_string, int* pos, 
 					i += _FONTKEY[j].len - 1;
 					if (contentlen)
 					{
-						content[contentlen] = 0;
+						content[contentlen] = 0; 
 						FormatInfo_Compiled(target_string, pos, content, contentlen, &m_FontGlobal);
 						contentlen = 0;
 					}
@@ -625,7 +626,7 @@ void CThreadOrderCatch::find_key_word_FillStruct(char* target_string, int* pos, 
 	content[contentlen] = 0;
 	if(contentlen)
 	{
-	FormatInfo_Compiled(target_string, pos, content, contentlen, &m_FontGlobal);
+		FormatInfo_Compiled(target_string, pos, content, contentlen, &m_FontGlobal);
 
 	contentlen = 0;
 	}
@@ -741,7 +742,7 @@ void CThreadOrderCatch::FormatInfo_Compiled(char* outputStr, int* endpos, char* 
 	//m_FontGlobal.lettercount = len;
 	begPos = (*endpos);
 
-	_FormatFontInGb2312Lib(outputStr + sizeof(stateString_FORMAT), endpos, string, len, m_FontGlobal.bold);
+	_FormatFontInGb2312Lib(outputStr + sizeof(stateString_FORMAT), endpos, string, len, m_FontGlobal.bold, &m_FontGlobal.RowBeg);
 	m_FontGlobal.lettercount = (((int)*endpos) - begPos) / 2;
 
 	SetFontSate((stateString_FORMAT*)&outputStr[begPos]
@@ -787,14 +788,14 @@ void CThreadOrderCatch::_formatAccord(int id)
 	case _FONTSEL__FONTW2_TYPE:
 
 		m_FontGlobal.width = 48;
-		m_FontGlobal.height = 24;
+		m_FontGlobal.height = 16;
 		break;
 	case _FONTSEL__FONTH2_TYPE:
-		m_FontGlobal.width = 24;
+		m_FontGlobal.width = 16;
 		m_FontGlobal.height = 48;
 		break;
 	case _FONTSEL___FONTH_TYPE:
-		m_FontGlobal.width = 24;
+		m_FontGlobal.width = 16;
 		m_FontGlobal.height = 32;
 		break;
 	case _FONTSEL___RIGHT_TYPE:
@@ -811,7 +812,7 @@ void CThreadOrderCatch::_formatAccord(int id)
 }
 
 
-void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* input, int lenOri, int bold)
+void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* input, int lenOri, int bold, int* endFlag)
 {
 
 	for (int i = 0; i < lenOri; i++)
@@ -824,8 +825,9 @@ void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* inp
 			UINT low = (Get & 0xff) - 0xA1;
 			UINT delta = 6 * 16 - 2;
 			UINT resultCal = high * delta + low;
-			output[(*len)++] = (resultCal >> 8) & 0xff | (bold ? _STRINGFONTBOLD : 0);
+			output[(*len)++] = (resultCal >> 8) & 0x1f | (bold ? _STRINGFONTBOLD : 0) | (*endFlag ? _STRINGFONT_BEG : 0);
 			output[(*len)++] = resultCal & 0xff;
+			*endFlag = 0;
 			i += 1;
 		}
 		else
@@ -837,9 +839,14 @@ void CThreadOrderCatch::_FormatFontInGb2312Lib(char* output, int* len, char* inp
 			UINT delta = 6 * 16 - 2;
 			UINT resultCal = high * delta + low;
 			resultCal += startAscii;
-			output[(*len)++] = (resultCal >> 8) & 0xff
-				| (bold ? _STRINGFONTBOLD : 0) | _STRINGFONTASCI;
+			if(input[i + 0] == '.' || input[i + 0] == ':' || input[i + 0] == '£º')
+				output[(*len)++] = (resultCal >> 8) & 0x1f
+				| (bold ? _STRINGFONTBOLD : 0) | (*endFlag ? _STRINGFONT_BEG : 0);
+			else
+			output[(*len)++] = (resultCal >> 8) & 0x1f
+				| (bold ? _STRINGFONTBOLD : 0) | _STRINGFONTASCI | (*endFlag ? _STRINGFONT_BEG : 0);
 			output[(*len)++] = resultCal & 0xff;
+			*endFlag = 0;
 		}
 	}
 }
@@ -888,6 +895,22 @@ void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
 		}
 	}
 	monitor;
+
+	monitor[0] = 0;
+	sprintf(piece, "const char buf[%d] = {", count);
+	strcat(monitor, piece);
+	for (int i = 0; i < count - 1; i++)
+	{
+		sprintf(piece, "0x%02x, ", 0xff & get[i]);
+		strcat(monitor, piece);
+		if (i % 50 == 49)
+			strcat(monitor, "\r\n");
+		
+	}
+	sprintf(piece, "0x%02x};", 0xff & get[count - 1]);
+	strcat(monitor, piece);
+	monitor;
+
 	delete piece;
 	delete monitor;
 }
@@ -896,10 +919,15 @@ void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
 void CThreadOrderCatch::_TranslateFormatInGb2312(_UnCompiled* rslt, stateString_FORMAT* ori)
 {
 
-	rslt->TextX = ori->param[0] + ((ori->param[1] << 8) & 0x300);
+
+	rslt->TextX = (ori->param[0] & 0xff) + ((ori->param[1] << 8) & 0x300);
 	rslt->lettercount = (ori->param[1] >> 2) & 0x3f;
 	rslt->width = ori->param[2] & 0xf;
 	rslt->height = (ori->param[2] >> 4) & 0xf;
+	rslt->width *= 8;
+	rslt->height *= 8;
+
+	if (*((char*)(ori + 1)) & _STRINGFONT_BEG && rslt->lettercount)rslt->RowBeg = 1;
 }
 
 

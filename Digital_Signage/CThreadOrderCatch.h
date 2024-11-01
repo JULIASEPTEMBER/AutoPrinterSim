@@ -22,11 +22,13 @@ struct _UnCompiled {
 	int height;
 	int bold;
 	int font;
+	int RowBeg;
 };
 
 #define _DOT_PER_ROW   380
 #define _STRINGFONTBOLD   0X80
 #define _STRINGFONTASCI   0X40
+#define _STRINGFONT_BEG   0X20
 class CThreadOrderCatch
 {
 public:
@@ -89,7 +91,7 @@ public:
 	void FormatInfo_Compiled(char* outputStr, int* endpos, char* string, int len, _UnCompiled* state);
 	//change global font by current font key
 	void _formatAccord(int id);
-	void _FormatFontInGb2312Lib(char* output, int* len, char* input, int lenOri, int bold = 0);
+	void _FormatFontInGb2312Lib(char* output, int* len, char* input, int lenOri, int bold = 0, int* endFlag = 0);
 	void _OutputTranslating(char* stringFormatResult, int count);
 	void _TranslateFormatInGb2312(_UnCompiled* rslt, stateString_FORMAT* ori);
 	void SaveFile_InPath(CString csPath, BYTE* bt, UINT nLen);

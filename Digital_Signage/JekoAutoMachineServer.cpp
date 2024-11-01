@@ -683,8 +683,14 @@ void CJekoAutoMachineServer::_LOOPThread()
 					char* get_string;
 					get_string = new char[strlen(gb2312)];
 					get_string[0] = 0;
-					pOrderCatch->_ConvertToScreen(get_string, gb2312, strlen(gb2312));
-					MessageBoxA(0, get_string, 0, 0);
+					//before
+					//pOrderCatch->_ConvertToScreen(get_string, gb2312, strlen(gb2312));
+					//new2024-10-30
+
+					strcpy(gb2312, testbuffer2);
+					int length_Format = pOrderCatch->_ConvertToScreen(get_string, gb2312, strlen(gb2312));
+
+					//MessageBoxA(0, get_string, 0, 0);
 
 					//::MessageBoxA(0, gb2312, 0, 0);
 
@@ -694,7 +700,7 @@ void CJekoAutoMachineServer::_LOOPThread()
 					//if (machine == st_TCPSer[k].client.ID_Machine)
 					{
 						_outsendformat.ID = k;
-						_outsendformat.len = strlen(get_string);
+						_outsendformat.len = length_Format;
 						_outsendformat.info = get_string;
 						((CClientSocket*)st_TCPSer[k].client.pClass);
 						::SendMessage(m_hWnd, WM_MYMESSAGE, POST________SEND, 0);
