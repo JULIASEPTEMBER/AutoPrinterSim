@@ -788,14 +788,14 @@ void CThreadOrderCatch::_formatAccord(int id)
 	case _FONTSEL__FONTW2_TYPE:
 
 		m_FontGlobal.width = 48;
-		m_FontGlobal.height = 24;
+		m_FontGlobal.height = 16;
 		break;
 	case _FONTSEL__FONTH2_TYPE:
-		m_FontGlobal.width = 24;
+		m_FontGlobal.width = 16;
 		m_FontGlobal.height = 48;
 		break;
 	case _FONTSEL___FONTH_TYPE:
-		m_FontGlobal.width = 24;
+		m_FontGlobal.width = 16;
 		m_FontGlobal.height = 32;
 		break;
 	case _FONTSEL___RIGHT_TYPE:
@@ -895,6 +895,22 @@ void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
 		}
 	}
 	monitor;
+
+	monitor[0] = 0;
+	sprintf(piece, "const char buf[%d] = {", count);
+	strcat(monitor, piece);
+	for (int i = 0; i < count - 1; i++)
+	{
+		sprintf(piece, "0x%02x, ", 0xff & get[i]);
+		strcat(monitor, piece);
+		if (i % 50 == 49)
+			strcat(monitor, "\r\n");
+		
+	}
+	sprintf(piece, "0x%02x};", 0xff & get[count - 1]);
+	strcat(monitor, piece);
+	monitor;
+
 	delete piece;
 	delete monitor;
 }
