@@ -276,8 +276,8 @@ char testChangable[10000];
 void C_ChatDlg::OnBnClickedButtonConnect()
 {
 
-	//strcpy(testChangable, testbuffer);
-	//pOrderCatch->_ConvertToScreen(getlocalTest, testChangable, strlen(testbuffer));
+	strcpy(testChangable, testbuffer);
+	pOrderCatch->_ConvertToScreen(getlocalTest, testChangable, strlen(testbuffer));
 #ifdef asdasd
 
 	//CComboBox m_Combo_Type;
