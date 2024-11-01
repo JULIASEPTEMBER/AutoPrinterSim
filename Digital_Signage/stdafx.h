@@ -98,7 +98,13 @@ const BYTE FC_DBG_RUN_TO=0x22;	//运行至指定处
 
 
 
-#define testbuffer "<FB><center>**万商财神**</center></FB>\\r\
+#define testbuffer "\
+< FH2 > <FW2>----------------< / FW2>< / FH2>\\r\
+\\r\
+\\r\
+\\r\
+\\r\
+<FB><center>**万商财神**</center></FB>\\r\
 <FB><FS2> <center>350014</center></FS2></FB>\\r\
 <center>取餐号</center>\\r\
 <FH2><FW2>----------------</FW2></FH2>\\r\
@@ -181,10 +187,9 @@ const BYTE FC_DBG_RUN_TO=0x22;	//运行至指定处
 
 #define testbuffer "<FB><center>**商赋圈**</center></FB>\\r\
 <FB><FS2> <center>桌号888</center></FS2></FB>\\r\
-<center>取餐号</center>\\r\
 <FH2><FW2>----------------</FW2></FH2>\\r\
 订单编号：cy257815350962290688\\r\
-下单时间:2023-12-13 10:26:10\\r\
+下单时间:2024-11-02 01:40:10\\r\
 \\r\
 *************商品*************** \\r\
 \\r\
@@ -192,14 +197,14 @@ const BYTE FC_DBG_RUN_TO=0x22;	//运行至指定处
 <FH2><FW2>----------------</FW2></FH2>\\r\
 小香风奶油蛋糕（默认）<right>X2 45.00 </right>\\r\
 <FH2><FW2>----------------</FW2></FH2>\\r\
-小熊猫奶油蛋糕（默认）<right>X1 29.00 </right>\\r\
+小熊猫奶油蛋糕（默认）<right>X1 48.00 </right>\\r\
 ********************************\\r\
 <FH>\\r\
-<LR>合计：￥125.00,优惠:-0.01  </LR>\\r\
-<LR>人数：5</LR>\\r\
-<right>实际支付：￥100.00 </right>\\r\
-<right>200积分+ ￥80.00余额+ ￥10 微信支付 </right>\\r\
-<right>获得积分：100 </right>\r\n\
+<LR>合计：￥138.00  </LR>\\r\
+<LR>区域：深圳龙华区</LR>\\r\
+<right>实际支付：￥138.00 </right>\\r\
+<right>200积分+ ￥100.00余额+ ￥28 微信支付 </right>\\r\
+<right>获得积分：128 </right>\r\n\
 <LR>备注：</LR>\\r\
 </FH>\\r\
 <FS><center>**完**</center></FS>\\r\
@@ -224,6 +229,9 @@ const BYTE FC_DBG_RUN_TO=0x22;	//运行至指定处
 \\r\
 <LR><FB><FS>菜品：,小熊猫奶油蛋糕</FS></FB></LR>\\r\
 <LR><FB><FS>桌号：,888 </FS> </FB> </LR>\\r\
+\\r\
+\\r\
+\\r\
 "
 
 
