@@ -25,6 +25,11 @@ struct _UnCompiled {
 	int RowBeg;
 };
 
+
+#define KEY_ACTUAL_PAYMENT	"实际支付"
+#define KEY_PAYMENT_METHOD	"支付方式"
+#define KEY_GET_POINTS		"获赠积分"
+
 #define _DOT_PER_ROW   380
 #define _STRINGFONTBOLD   0X80
 #define _STRINGFONTASCI   0X40

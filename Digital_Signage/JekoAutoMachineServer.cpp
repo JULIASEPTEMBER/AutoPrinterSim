@@ -689,6 +689,7 @@ void CJekoAutoMachineServer::_LOOPThread()
 					strcpy(gb2312, testbuffer2);
 					int length_Format = pOrderCatch->_ConvertToScreen(get_string, gb2312, strlen(gb2312));
 
+
 					//MessageBoxA(0, get_string, 0, 0);
 
 					//::MessageBoxA(0, gb2312, 0, 0);

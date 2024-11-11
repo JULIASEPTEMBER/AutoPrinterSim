@@ -378,7 +378,6 @@ void CDigital_SignageView::c2w(wchar_t* pwstr, size_t& len, const char* str)
 		//if(n>=len)n=len-1;
 
 		MultiByteToWideChar(CP_ACP, 0, (const char*)str, (int)nu, pwstr, (int)n);
-
 		pwstr[n] = 0;
 		len = n;
 	}
@@ -387,7 +386,6 @@ void CDigital_SignageView::c2w(wchar_t* pwstr, size_t& len, const char* str)
 
 
 char* CDigital_SignageView::w2c(char* pcstr, const wchar_t* pwstr, size_t& len)
-
 {
 
 	int nlength = wcslen(pwstr);
@@ -1011,8 +1009,6 @@ int C_ChatDlg::QuickReplace_Buffer(WCHAR* buffer, UINT nLen, WCHAR* wcSource, UI
 
 				break;
 			}
-
-
 		}
 		//MessageBox(wcTemp);
 		if (!nCheck)
