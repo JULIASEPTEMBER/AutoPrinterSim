@@ -911,8 +911,8 @@ void CThreadOrderCatch::_OutputTranslating(char* stringFormatResult, int count)
 	strcat(monitor, piece);
 	monitor;
 
-	delete piece;
-	delete monitor;
+	delete []piece;
+	delete []monitor;
 }
 
 

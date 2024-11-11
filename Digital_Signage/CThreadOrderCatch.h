@@ -25,6 +25,11 @@ struct _UnCompiled {
 	int RowBeg;
 };
 
+
+#define KEY_ACTUAL_PAYMENT	"实际支付"
+#define KEY_PAYMENT_METHOD	"支付方式"
+#define KEY_GET_POINTS		"获赠积分"
+
 #define _DOT_PER_ROW   380
 #define _STRINGFONTBOLD   0X80
 #define _STRINGFONTASCI   0X40
@@ -86,6 +91,7 @@ public:
 	//char2[4:7] = height / 8
 	//string:
 	//occor 3*'\0' on the end of each row 
+
 	_UnCompiled m_FontGlobal;
 	void SetFontSate(stateString_FORMAT* fontStruct, int textX, int lettercount, int width, int height);
 	void FormatInfo_Compiled(char* outputStr, int* endpos, char* string, int len, _UnCompiled* state);
