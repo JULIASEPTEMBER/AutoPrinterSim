@@ -86,6 +86,7 @@ public:
 	//char2[4:7] = height / 8
 	//string:
 	//occor 3*'\0' on the end of each row 
+
 	_UnCompiled m_FontGlobal;
 	void SetFontSate(stateString_FORMAT* fontStruct, int textX, int lettercount, int width, int height);
 	void FormatInfo_Compiled(char* outputStr, int* endpos, char* string, int len, _UnCompiled* state);

@@ -458,7 +458,6 @@ void CJekoAutoMachineServer::_LOOPThread()
 {
 	int currenttick = ::GetTickCount();
 
-
 	for(int i = 0; i < _LEN_DESIGN; i ++)
 	{
 
@@ -564,7 +563,7 @@ void CJekoAutoMachineServer::_LOOPThread()
 				get &= 0XFF;
 				switch(get)
 				{
-				case PACKAGESTATE___NULL: 
+				case PACKAGESTATE___NULL:
 					{
 						_outsendformat.ID = i;
 						_outsendformat.len = sizeof(SENDWORD__NOT_EXT);
@@ -712,9 +711,9 @@ void CJekoAutoMachineServer::_LOOPThread()
 					//delete gb2312;
 				}
 
-					delete get_string;
-					delete url;
-					delete gb2312;
+					delete []get_string;
+					delete []url;
+					delete []gb2312;
 				//target machine mentioned in http 
 				st_TCPSer[i].server.nMaskFin |= MASK___WEB_PRT;
 
@@ -741,6 +740,7 @@ void CJekoAutoMachineServer::_LOOPThread()
 						((CClientSocket*)st_TCPSer[k].client.pClass);
 						::SendMessage(m_hWnd, WM_MYMESSAGE, POST________SEND, 0);
 						break;
+
 					}
 				}
 
